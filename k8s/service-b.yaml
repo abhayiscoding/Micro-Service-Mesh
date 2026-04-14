@@ -1,0 +1,63 @@
+# service-b: v1 and v2 traffic splitting
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+  namespace: mesh-demo
+spec:
+  selector:
+    app: service-b
+  ports:
+    - port: 8080
+      targetPort: 5678
+      name: http
+---
+# v1 deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b-v1
+  namespace: mesh-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-b
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: service-b
+        version: v1
+    spec:
+      containers:
+        - name: app
+          image: hashicorp/http-echo
+          args: ["-text", "Response from service-b:v1"]
+          ports:
+            - containerPort: 5678
+---
+# v2 deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b-v2
+  namespace: mesh-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-b
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: service-b
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: hashicorp/http-echo
+          args: ["-text", "Response from service-b:v2 (canary)"]
+          ports:
+            - containerPort: 5678

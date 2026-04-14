@@ -1,0 +1,33 @@
+# service-a: Caller
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-a
+  namespace: mesh-demo
+spec:
+  selector:
+    app: service-a
+  ports:
+    - port: 8080
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-a
+  namespace: mesh-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-a
+  template:
+    metadata:
+      labels:
+        app: service-a
+    spec:
+      containers:
+        - name: app
+          image: curlimages/curl
+          command: ["/bin/sh"]
+          args: ["-c", "while true; do curl -s http://service-b:8080/; sleep 5; done"]

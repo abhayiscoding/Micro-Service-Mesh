@@ -1,0 +1,9 @@
+# Istio service to service Auth (mTLS)
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: mesh-demo
+spec:
+  mtls:
+    mode: STRICT
