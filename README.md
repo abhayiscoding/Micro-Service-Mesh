@@ -27,4 +27,4 @@ All the steps are mentioned [here](Steps.md)
 
 ## Result
 ![Project Screenshot 1](images/overview.png)
-![Project Screenshot 2](images/deag.png)
+![Project Screenshot 2](images/diag.png)
