@@ -2,7 +2,8 @@
 - 3 services, covering service-to-service authentication (mTLS) and traffic splitting (canary deployments)
 
 ## Start
-Install Istio, prefer istioctl over helm
+Install Istio, prefer istioctl over helm <br>
+```sh
 > kind create cluster --config=cluster.yaml --name=cluster1
 > curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.28.0 sh -
 // donwnload istio zip file, extract it if curl is not working(in my case)
@@ -39,8 +40,7 @@ Verification:
 Service-c is only reachable with mTLS, From service-a   // should reuturn response from service-c
 > kubectl exec -n mesh-demo deployment/service-a -- curl -s http://service-c:8080/
 
-
-In case to editing and reapplying .yaml files, restart pods
+In case of editing and reapplying .yaml files, restart pods
 > kubectl rollout restart deployment -n mesh-demo
 
 // Add kiali dashboard
@@ -63,3 +63,4 @@ In case to editing and reapplying .yaml files, restart pods
 > kubectl delete crd $(kubectl get crd | grep 'istio.io' | awk '{print $1}')
 Also remove its path from environment variables
 > Kind delete cluster --name=cluster1
+```
